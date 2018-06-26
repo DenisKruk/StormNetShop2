@@ -1,5 +1,9 @@
 [{
     "name": "admin",
     "password": "qwerty123"
- }
+ },
+  {
+    "name": "den",
+    "password": "den040986"
+  }
 ]

@@ -254,7 +254,8 @@ public class AppClient extends Application {
 
             if (goodsInShop.getSelectionModel().getSelectedItem() == null) {
                 windowWaring("Выберите товар");
-
+            }else if(goodsInShop.getSelectionModel().getSelectedItem().getCount()==0) {
+                windowWaring("Нет товара в магазине");
             } else {
                 Good good = goodsInShop.getSelectionModel().getSelectedItem();
                 Good newGood = new Good(good.getName(), 1, good.getPrice());
@@ -278,6 +279,8 @@ public class AppClient extends Application {
     private EventHandler<ActionEvent> upCountGoodToCartEvent = event -> {
         if (listCarts.getSelectionModel().getSelectedItem() == null) {
             windowWaring("Не выбран товар для изменения количества");
+        }else if(listCarts.getSelectionModel().getSelectedItem().getCount()==goodsInShop.getSelectionModel().getSelectedItem().getCount()){
+            windowWaring("Выбрано максимальное количество товара в магазине");
         } else {
             listCarts.getSelectionModel().getSelectedItem().increaseCount();
             ShopService.totalSum(totalAmount, listCarts);
@@ -344,7 +347,7 @@ public class AppClient extends Application {
             if (!check) {
                 try {
                     String json = mapper.writeValueAsString(productInCart);
-//                    HttpRequestService.sendPost(HttpConnectionService.urlConnection.concat("/buyGoods"), json, http.accessToken);
+                    HttpRequestService.sendPostAndGetResponse(HttpRequestService.urlConnection.concat("/buyGoods"), json, accessToken.toString());
                     windowInformation("Товар успешно приобретен");
                     cartOfProduct.clear();
                     ShopService.afterBuyOfGoods(totalAmount);
@@ -400,7 +403,7 @@ public class AppClient extends Application {
                 Good addGood = new Good(nameOfGood, countOfGood, priceOfGood);
 
                 String json = mapper.writeValueAsString(addGood);
-                StringBuffer result =  HttpRequestService.sendPostAndGetResponse(HttpRequestService.urlConnection.concat("/addGood"), json);
+                StringBuffer result =  HttpRequestService.sendPostAndGetResponse(HttpRequestService.urlConnection.concat("/addGood"), json, accessToken.toString());
                 if (result.toString().isEmpty()) {
                     windowInformation("Товар успешно добавлен");
                 } else {

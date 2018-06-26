@@ -87,7 +87,7 @@
             margin-left: 5px;
             display: block;
             float: left;
-            background-color: chartreuse;
+            background-color: orange;
         }
 
         .cart {
@@ -95,13 +95,13 @@
         }
 
         .cart .good {
-            height: 100px;
+            height: 80px;
             width: 100px;
             margin-top: 5px;
             margin-left: 5px;
             display: block;
             float: left;
-            background-color: chartreuse;
+            background-color: violet;
         }
     </style>
 </head>
@@ -122,6 +122,9 @@
                 </div>
                 <div>
                     {{good.price}}$
+                </div>
+                <div>
+                    {{good.count}}pcs
                 </div>
                 <div ng-if="!app.isGoodInCart(good)">
                     <button ng-click="app.addToCart(good)">Add to cart</button>
@@ -155,8 +158,8 @@
     </div>
 
     <div ng-show="app.cart.length > 0">
-        <div>Total price: {{app.getTotalPrice()}}</div>
-        <button ng-click="app.buyGoods()">Buy</button>
+        <div >Total price: {{app.getTotalPrice()}}</div>
+        <button style="background-color: blue "  ng-click="app.buyGoods()">Buy</button>
     </div>
 
 </div>

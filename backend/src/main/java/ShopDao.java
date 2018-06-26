@@ -42,11 +42,11 @@ public class ShopDao {
     public static synchronized String save(Good good) {
         List<Good> goods = findAll();
         goods.add(good);
-        try (FileOutputStream fos = new FileOutputStream("goods.json");) {
+        try (FileOutputStream fos = new FileOutputStream("goods.json")) {
             String listOfGoods = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(goods);
             fos.write(listOfGoods.getBytes());
             fos.flush();
-            fos.close();//закрытие потока
+
         } catch (IOException e) {
             LOGGER.error(e.getMessage(), e);
             return e.getMessage() + " during good saving process";

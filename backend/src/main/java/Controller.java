@@ -23,8 +23,13 @@ public class Controller {
 
         get("/getAllGoods", getAllGoodsRoute());
         get("/findGoodByName", getFindGoodByNameRoute());
-
+        post("/buyGoods", getChangeCount());
         post("/authorization", (request, response) -> {
+
+
+
+
+
 
             try {
                 String body = request.body(); // извлекаем тело запроса
@@ -48,6 +53,23 @@ public class Controller {
 
         post("/addGood", getAddGoodRoute());
 
+    }
+
+    private static Route getChangeCount() {
+        return (Request request, Response response) -> {
+            String goodName = request.queryParams("goodName");
+            Good good = ShopDao.findByName(goodName);
+        String count = request.queryParams("count");
+            Integer contInt = convertStringToInt(count);
+            if (contInt == null) {
+                return "Please specify count as a number";
+                }
+                good.setCount(good.getCount()-contInt);
+
+            String accessToken = request.headers("Access-Control-Allow-Headers"); // получаем из запроса токен пользователя
+            System.out.println(accessToken);
+            return ShopService.editGood(good, accessToken);
+        };
     }
 
     private static Route getAllGoodsRoute() {

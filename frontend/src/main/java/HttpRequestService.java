@@ -79,6 +79,29 @@ public class HttpRequestService {
         while ((inputLine = in.readLine()) != null) {
             response.append(inputLine);
         }
+        return response;
+    }
+    public static StringBuffer sendPostAndGetResponse(String url, String json, String token) throws IOException {
+        URL obj = new URL(url);
+        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+        con.addRequestProperty("Access-Control-Allow-Headers", token);
+        //add reuqest header
+        con.setRequestMethod("POST");
+
+        // Send post request
+        con.setDoOutput(true);
+        DataOutputStream wr = new DataOutputStream(con.getOutputStream());
+        wr.writeBytes(json);
+        wr.flush();
+        wr.close();
+
+        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        StringBuffer response = new StringBuffer();
+
+        while ((inputLine = in.readLine()) != null) {
+            response.append(inputLine);
+        }
        return response;
 
 //        accessToken = response.toString();
